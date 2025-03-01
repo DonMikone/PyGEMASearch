@@ -18,139 +18,113 @@ result = gema_search.search("Bohemian Rhapsody")
 print(result)
 ```
 
-# GemaMusicSearch - Search Function Documentation
+# GemaMusicSearch API Documentation
 
 ## Overview
+`GemaMusicSearch` provides an interface to search for musical works in the GEMA database.
 
-The `search()` function in the `GemaMusicSearch` class is designed to retrieve a list of musical works based on a given title. The function allows pagination to navigate through large datasets efficiently.
-
----
-
-## Function Signature
-
-```python
-def search(self, search_string: str, page: int = 0, page_size: int = 50):
+## Installation
+Ensure you have `requests` installed:
+```bash
+pip install requests
 ```
 
-## Parameters
+## Usage
 
-| Parameter  | Type  | Default | Description |
-|------------|-------|---------|-------------|
-| `search_string`    | `str`  | _None_  | The title and/or name of one or multiple authors/composers/publishers of the musical work to search for. |
-| `page`     | `int`  | `0`     | The page number for pagination. Starts from `0`. |
-| `page_size` | `int` | `50`    | The number of results per page. |
-
-## Returns
-
-The function returns a list of `Werk` objects that match the given title.
-
-## Usage Example
-
+### Initialize the Search
 ```python
-# Create an instance of GemaMusicSearch
-gema_search = GemaMusicSearch()
+from gema_music_search import GemaMusicSearch
 
-# Search for works with the title "Bohemian Rhapsody"
-results = gema_search.search(search_string="Bohemian Rhapsody", page=0, page_size=10)
+gema_search = GemaMusicSearch(api_url="https://api.gema.de")
+```
 
-# Iterate over results and print the work titles
+### Search for a Work by Title
+```python
+results = gema_search.search("Bohemian Rhapsody")
 for werk in results:
-    print(f"Title: {werk.titel}, ISRC: {werk.isrc}, Composers: {[u.name for u in werk.urheber]}")
+    print(werk.titel)
 ```
 
-## Pagination Example
-
-To retrieve multiple pages of results, simply increase the `page` parameter:
-
+#### `search` Function
 ```python
-# Fetch second page of results
-second_page_results = gema_search.search(search_string="Bohemian Rhapsody", page=1, page_size=10)
+def search(self, search_string: str, page: int = 0, page_size: int = 50, fuzzy_search=True):
 ```
+- **search_string** (*str*): The title of the work to search for.
+- **page** (*int*): The page number of the results (default is `0`).
+- **page_size** (*int*): Number of results per page (default is `50`).
+- **fuzzy_search** (*bool*): Whether to perform a fuzzy search (`True`) or an exact match (`False`).
+- **Returns**: A list of `Werk` objects or `None` if an error occurs.
+
+### Search for a Work by Werknummer
+```python
+results = gema_search.search_werknummer("17680241-007")
+for werk in results:
+    print(werk.titel)
+```
+
+#### `search_werknummer` Function
+```python
+def search_werknummer(self, number_string: str, page: int = 0, page_size: int = 50):
+```
+- **number_string** (*str*): The Werknummer to search for.
+- **page** (*int*): The page number of the results (default is `0`).
+- **page_size** (*int*): Number of results per page (default is `50`).
+- **Returns**: A list of `Werk` objects or `None` if an error occurs.
+
+### Search for a Work by ISRC
+```python
+results = gema_search.search_isrc("DEUM72301260")
+for werk in results:
+    print(werk.titel)
+```
+
+#### `search_isrc` Function
+```python
+def search_isrc(self, isrc: str, page: int = 0, page_size: int = 50):
+```
+- **isrc** (*str*): The ISRC code to search for.
+- **page** (*int*): The page number of the results (default is `0`).
+- **page_size** (*int*): Number of results per page (default is `50`).
+- **Returns**: A list of `Werk` objects or `None` if an error occurs.
+
+### Example: Fetching Authors and ISRC of a Track
+```python
+results = gema_search.search("Bohemian Rhapsody")
+for werk in results:
+    print(f"Title: {werk.titel}")
+    print("Authors:")
+    for urheber in werk.urheber:
+        print(f"  - {urheber.vorname} {urheber.nachname} ({urheber.rolle})")
+    print(f"ISRC: {werk.isrc}")
+```
+
+## Available Classes and Properties
+
+### `Werk` Class
+- **titel** (*str*): The title of the work.
+- **werknummer** (*str*): The unique work number.
+- **spieldauer** (*int*): Duration of the work in seconds.
+- **urheber** (*list[Urheber]*): List of authors/composers.
+- **isrc** (*list[str]*): ISRC codes associated with the work.
+
+### `Urheber` Class
+- **vorname** (*str*): First name of the author.
+- **nachname** (*str*): Last name of the author.
+- **rolle** (*str*): Role (e.g., composer, lyricist).
+
+### `Interpret` Class
+- **name** (*str*): Name of the interpreter.
+
+### `Verlag` Class
+- **name** (*str*): Name of the publisher.
+
+### `Besetzung` Class
+- **bezeichnung** (*str*): Instrumentation type.
 
 ## Notes
-
-- The function performs a case-insensitive search on the given title.
-- If no matches are found, an empty list is returned.
-- The `page_size` should be chosen appropriately to balance performance and data retrieval needs.
-
----
-
-## Search by Database Number (Werknummer)
-
-#### `search_werknummer(number_string: str, page: int = 0, page_size: int = 50)`
-**Description:**
-Searches for music works using their unique work number.
-
-**Parameters:**
-- `number_string` (str): The exact work number.
-- `page` (int, optional): The page number for pagination. Default is `0`.
-- `page_size` (int, optional): The number of results per page. Default is `50`.
-
-**Returns:**
-- A list of `Werk` objects if successful, `None` otherwise.
-
-**Example Usage:**
-```python
-results = gema_search.search_werknummer("17680241-007")
-for werk in results:
-    print(werk.titel)
-```
----
-
-## Search by ISRC
-
-#### `search_isrc(isrc: str, page: int = 0, page_size: int = 50)`
-**Description:**
-Searches for music works using their ISRC code.
-
-**Parameters:**
-- `isrc` (str): The exact ISRC code.
-- `page` (int, optional): The page number for pagination. Default is `0`.
-- `page_size` (int, optional): The number of results per page. Default is `50`.
-
-**Returns:**
-- A list of `Werk` objects if successful, `None` otherwise.
-
-**Example Usage:**
-```python
-results = gema_search.search_isrc("DEUM72301260")
-for werk in results:
-    print(werk.titel)
-```
-
-## Example Code
-```python
-# Initialize search class
-gema_search = GemaMusicSearch()
-
-# Search by title
-results = gema_search.search("Bohemian Rhapsody")
-if results:
-    for werk in results:
-        print(f"Title: {werk.titel}, ISRC: {werk.isrc}")
-
-# Search by work number
-results = gema_search.search_werknummer("17680241-007")
-if results:
-    for werk in results:
-        print(f"Title: {werk.titel}, Work Number: {werk.werknummer}")
-
-# Search by ISRC
-results = gema_search.search_isrc("DEUM72301260")
-if results:
-    for werk in results:
-        print(f"Title: {werk.titel}, ISRC: {werk.isrc}")
-```
-
-
-
-
-
-
-
-
-
-
+- Ensure you have an active GEMA session before making API requests.
+- Use fuzzy search for better results when searching by title.
+- Handling errors properly ensures a smoother experience.
 
 
 # Example Usage of the Wrapper Classes
