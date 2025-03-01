@@ -187,8 +187,6 @@ else:
 - `is_eigenes_konto`
 - `identifier`
 
-This example demonstrates how to work with the `Werk` class and its related entities efficiently.
-
 ## License
 GPLv3
 
