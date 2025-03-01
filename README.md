@@ -73,6 +73,86 @@ second_page_results = gema_search.search(search_string="Bohemian Rhapsody", page
 - If no matches are found, an empty list is returned.
 - The `page_size` should be chosen appropriately to balance performance and data retrieval needs.
 
+---
+
+## Search by Database Number (Werknummer)
+
+#### `search_werknummer(number_string: str, page: int = 0, page_size: int = 50)`
+**Description:**
+Searches for music works using their unique work number.
+
+**Parameters:**
+- `number_string` (str): The exact work number.
+- `page` (int, optional): The page number for pagination. Default is `0`.
+- `page_size` (int, optional): The number of results per page. Default is `50`.
+
+**Returns:**
+- A list of `Werk` objects if successful, `None` otherwise.
+
+**Example Usage:**
+```python
+results = gema_search.search_werknummer("17680241-007")
+for werk in results:
+    print(werk.titel)
+```
+---
+
+## Search by ISRC
+
+#### `search_isrc(isrc: str, page: int = 0, page_size: int = 50)`
+**Description:**
+Searches for music works using their ISRC code.
+
+**Parameters:**
+- `isrc` (str): The exact ISRC code.
+- `page` (int, optional): The page number for pagination. Default is `0`.
+- `page_size` (int, optional): The number of results per page. Default is `50`.
+
+**Returns:**
+- A list of `Werk` objects if successful, `None` otherwise.
+
+**Example Usage:**
+```python
+results = gema_search.search_isrc("DEUM72301260")
+for werk in results:
+    print(werk.titel)
+```
+
+## Example Code
+```python
+# Initialize search class
+gema_search = GemaMusicSearch()
+
+# Search by title
+results = gema_search.search("Bohemian Rhapsody")
+if results:
+    for werk in results:
+        print(f"Title: {werk.titel}, ISRC: {werk.isrc}")
+
+# Search by work number
+results = gema_search.search_werknummer("17680241-007")
+if results:
+    for werk in results:
+        print(f"Title: {werk.titel}, Work Number: {werk.werknummer}")
+
+# Search by ISRC
+results = gema_search.search_isrc("DEUM72301260")
+if results:
+    for werk in results:
+        print(f"Title: {werk.titel}, ISRC: {werk.isrc}")
+```
+
+
+
+
+
+
+
+
+
+
+
+
 # Example Usage of the Wrapper Classes
 
 This section provides an overview of how to use the wrapper classes to iterate over results, fetch the names of the authors/composers, and e.g. retrieve the ISRC code of a track.
