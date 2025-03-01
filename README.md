@@ -122,9 +122,7 @@ for werk in results:
 - **bezeichnung** (*str*): Instrumentation type.
 
 ## Notes
-- Ensure you have an active GEMA session before making API requests.
 - Use fuzzy search for better results when searching by title.
-- Handling errors properly ensures a smoother experience.
 
 
 # Example Usage of the Wrapper Classes
