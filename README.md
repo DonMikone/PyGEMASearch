@@ -33,9 +33,9 @@ pip install requests
 
 ### Initialize the Search
 ```python
-from gema_music_search import GemaMusicSearch
+from gemasearch import GemaMusicSearch
 
-gema_search = GemaMusicSearch(api_url="https://api.gema.de")
+gema_search = GemaMusicSearch()
 ```
 
 ### Search for a Work by Title
