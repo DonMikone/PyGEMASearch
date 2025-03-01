@@ -23,12 +23,6 @@ print(result)
 ## Overview
 `GemaMusicSearch` provides an interface to search for musical works in the GEMA database.
 
-## Installation
-Ensure you have `requests` installed:
-```bash
-pip install requests
-```
-
 ## Usage
 
 ### Initialize the Search
