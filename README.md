@@ -55,6 +55,9 @@ def search(self, search_string: str, page: int = 0, page_size: int = 50, fuzzy_s
 - **fuzzy_search** (*bool*): Whether to perform a fuzzy search (`True`) or an exact match (`False`).
 - **Returns**: A list of `Werk` objects or `None` if an error occurs.
 
+## Notes
+- Use fuzzy search for better results when searching by title.
+
 ### Search for a Work by Werknummer
 ```python
 results = gema_search.search_werknummer("17680241-007")
@@ -97,33 +100,6 @@ for werk in results:
         print(f"  - {urheber.vorname} {urheber.nachname} ({urheber.rolle})")
     print(f"ISRC: {werk.isrc}")
 ```
-
-## Available Classes and Properties
-
-### `Werk` Class
-- **titel** (*str*): The title of the work.
-- **werknummer** (*str*): The unique work number.
-- **spieldauer** (*int*): Duration of the work in seconds.
-- **urheber** (*list[Urheber]*): List of authors/composers.
-- **isrc** (*list[str]*): ISRC codes associated with the work.
-
-### `Urheber` Class
-- **vorname** (*str*): First name of the author.
-- **nachname** (*str*): Last name of the author.
-- **rolle** (*str*): Role (e.g., composer, lyricist).
-
-### `Interpret` Class
-- **name** (*str*): Name of the interpreter.
-
-### `Verlag` Class
-- **name** (*str*): Name of the publisher.
-
-### `Besetzung` Class
-- **bezeichnung** (*str*): Instrumentation type.
-
-## Notes
-- Use fuzzy search for better results when searching by title.
-
 
 # Example Usage of the Wrapper Classes
 
