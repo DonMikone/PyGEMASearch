@@ -59,6 +59,10 @@ class GemaMusicSearch:
         # Session is initialized and active
         return True
 
+    """
+    
+    """
+
     def search(self, search_string: str, page: int = 0, page_size: int = 50):
         if not self._initialize_session():
             print('No active session!')
@@ -70,6 +74,66 @@ class GemaMusicSearch:
                 "matchOperator": "FUZZY",
                 "value": search_string
             }],
+            "filters": {},
+            "pagination": {
+                "page": page,
+                "pageSize": page_size
+            }
+        }
+        try:
+            response = self.session.post(self.api_url, json=payload)
+            response.raise_for_status()
+            ret_list = list()
+            for titel in response.json().get('titel', []):
+                ret_list.append(Werk(titel))
+            return ret_list
+        except requests.RequestException as e:
+            print(f"Error fetching data: {e}")
+            return None
+
+    def search_werknummer(self, number_string: str, page: int = 0, page_size: int = 50):
+        if not self._initialize_session():
+            print('No active session!')
+            return None
+
+        payload = {
+            "queryCriteria": [
+                {
+                    "field": "WERK_FASSUNGSNUMMER",
+                    "matchOperator": "EXACTLY",
+                    "value": number_string
+                }
+            ],
+            "filters": {},
+            "pagination": {
+                "page": page,
+                "pageSize": page_size
+            }
+        }
+        try:
+            response = self.session.post(self.api_url, json=payload)
+            response.raise_for_status()
+            ret_list = list()
+            for titel in response.json().get('titel', []):
+                ret_list.append(Werk(titel))
+            return ret_list
+        except requests.RequestException as e:
+            print(f"Error fetching data: {e}")
+            return None
+
+    def search_isrc(self, isrc: str, page: int = 0, page_size: int = 50):
+        if not self._initialize_session():
+            print('No active session!')
+            return None
+
+        payload = {
+            "queryCriteria": [
+                {
+                    "field": "WERK_ISRC",
+                    "matchOperator": "EXACTLY",
+                    "value": isrc
+                }
+            ],
             "filters": {},
             "pagination": {
                 "page": page,
