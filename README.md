@@ -162,6 +162,6 @@ else:
 This example demonstrates how to work with the `Werk` class and its related entities efficiently.
 
 ## License
-MIT
+GPLv3
 
 
