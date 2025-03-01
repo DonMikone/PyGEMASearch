@@ -49,7 +49,7 @@ for werk in results:
 ```python
 def search(self, search_string: str, page: int = 0, page_size: int = 50, fuzzy_search=True):
 ```
-- **search_string** (*str*): The title of the work to search for.
+- **search_string** (*str*): The title or name of ony or multiple composers/authors of the work to search for.
 - **page** (*int*): The page number of the results (default is `0`).
 - **page_size** (*int*): Number of results per page (default is `50`).
 - **fuzzy_search** (*bool*): Whether to perform a fuzzy search (`True`) or an exact match (`False`).
