@@ -1,11 +1,16 @@
 import requests
 
+from gemasearch.data import Werk
+
 
 class GemaMusicSearch:
     def __init__(self):
         self.session = None
         self.api_url = "https://www.gema.de/portal/api/public/cloud/v1/main/repertoiresuche/suche"
         self.init_url = "https://www.gema.de/portal/config/frontend"
+
+        if not self._initialize_session():
+            print('Could not initialize session. This package might need some updating.')
 
     def _initialize_session(self):
 
@@ -46,9 +51,9 @@ class GemaMusicSearch:
                     "Connection": "keep-alive"
                 })
                 return True
-
             else:
                 print('Could not fetch api key. Aborting!')
+                self.session = None
                 return False
 
         # Session is initialized and active
@@ -74,7 +79,10 @@ class GemaMusicSearch:
         try:
             response = self.session.post(self.api_url, json=payload)
             response.raise_for_status()
-            return response.json()
+            ret_list = list()
+            for titel in response.json().get('titel', []):
+                ret_list.append(Werk(titel))
+            return ret_list
         except requests.RequestException as e:
             print(f"Error fetching data: {e}")
             return None
