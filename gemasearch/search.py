@@ -59,7 +59,7 @@ class GemaMusicSearch:
         # Session is initialized and active
         return True
 
-    def search(self, title: str, page: int = 0, page_size: int = 50):
+    def search(self, search_string: str, page: int = 0, page_size: int = 50):
         if not self._initialize_session():
             print('No active session!')
             return None
@@ -68,7 +68,7 @@ class GemaMusicSearch:
             "queryCriteria": [{
                 "field": "WERK_TITEL",
                 "matchOperator": "FUZZY",
-                "value": title
+                "value": search_string
             }],
             "filters": {},
             "pagination": {
