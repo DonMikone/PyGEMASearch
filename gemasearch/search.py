@@ -63,7 +63,7 @@ class GemaMusicSearch:
     
     """
 
-    def search(self, search_string: str, page: int = 0, page_size: int = 50):
+    def search(self, search_string: str, page: int = 0, page_size: int = 50, fuzzy_search=True):
         if not self._initialize_session():
             print('No active session!')
             return None
@@ -71,7 +71,7 @@ class GemaMusicSearch:
         payload = {
             "queryCriteria": [{
                 "field": "WERK_TITEL",
-                "matchOperator": "FUZZY",
+                "matchOperator": "FUZZY" if fuzzy_search else 'EXACTLY',
                 "value": search_string
             }],
             "filters": {},
