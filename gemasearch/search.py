@@ -92,10 +92,15 @@ class GemaMusicSearch:
             print('No active session!')
             return None
 
+        if '-' in number_string:
+            field = 'WERK_FASSUNGSNUMMER'
+        else:
+            field = 'WERK_NUMMER'
+
         payload = {
             "queryCriteria": [
                 {
-                    "field": "WERK_FASSUNGSNUMMER",
+                    "field": field,
                     "matchOperator": "EXACTLY",
                     "value": number_string
                 }
