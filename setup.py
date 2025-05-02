@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="PyGEMASearch",
-    version="0.1.4",
+    version="0.1.5",
     author="Mike Kremer",
     author_email="mikelsoft@gmail.com",
     description="A Python package to search for songs in the GEMA database.",
